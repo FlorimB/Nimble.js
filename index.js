@@ -74,6 +74,92 @@ var Refresh = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./src/DOM/Observer.js":
+/*!*****************************!*\
+  !*** ./src/DOM/Observer.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/**
+ * Creates an observer for data objects, triggering a refresh of the DOM when data changes.
+ * @param {HTMLElement} root - The root element from which to start refreshing the DOM.
+ * @param {object} directives - Object containing directive functions.
+ * @param {object} data - Data object to observe for changes.
+ * @param {Function} refreshDom - Function to refresh the DOM when data changes.
+ * @returns {object} - Proxy object for observing changes in the data object.
+ */
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function (root, directives, data, refreshDom) {
+  // Create a Proxy object to observe changes in the data
+  return new Proxy(data, {
+    // Define a trap for setting properties on the data object
+    set: function set(element, key, value) {
+      // Set the property value in the data object
+      element[key] = value;
+      // Trigger the refreshDom function to update the DOM
+      refreshDom(root, directives, data);
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "./src/DataInitialiser.js":
+/*!********************************!*\
+  !*** ./src/DataInitialiser.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getInitialData: () => (/* binding */ getInitialData)
+/* harmony export */ });
+/* harmony import */ var _evaluation_Evaluate_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./evaluation/Evaluate.js */ "./src/evaluation/Evaluate.js");
+
+
+/**
+ * @returns {object} - Returns the converted object from data string
+ * 
+ * Takes the Data as string, and converts it to an object
+ */
+var getInitialData = function getInitialData(root) {
+  var dataString = root.getAttribute("f-data");
+  var obj = {};
+  var key = '';
+  var value = '';
+  var inQuotes = false;
+  var isKey = true;
+  for (var i = 0; i < dataString.length; i++) {
+    var _char = dataString[i].replace(/[\{{\}}]/g, "");
+    if (_char === "'" || _char === '"') {
+      inQuotes = !inQuotes;
+    } else if (_char === ':' && !inQuotes) {
+      isKey = false;
+    } else if (_char === ',' && !inQuotes) {
+      obj[key.trim()] = _evaluation_Evaluate_js__WEBPACK_IMPORTED_MODULE_0__["default"].evaluateDataType(value.trim());
+      key = '';
+      value = '';
+      isKey = true;
+    } else {
+      if (isKey) {
+        key += _char;
+      } else {
+        value += _char;
+      }
+    }
+  }
+  if (key.trim() !== '' && value.trim() !== '') {
+    obj[key.trim()] = _evaluation_Evaluate_js__WEBPACK_IMPORTED_MODULE_0__["default"].evaluateDataType(value.trim());
+  }
+  return obj;
+};
+
+
+/***/ }),
+
 /***/ "./src/directives.js":
 /*!***************************!*\
   !*** ./src/directives.js ***!
@@ -248,8 +334,10 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _directives_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./directives.js */ "./src/directives.js");
-/* harmony import */ var _evaluation_Evaluate_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./evaluation/Evaluate.js */ "./src/evaluation/Evaluate.js");
-/* harmony import */ var _DOM_DomManipulation_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DOM/DomManipulation.js */ "./src/DOM/DomManipulation.js");
+/* harmony import */ var _DataInitialiser_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DataInitialiser.js */ "./src/DataInitialiser.js");
+/* harmony import */ var _DOM_Observer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DOM/Observer.js */ "./src/DOM/Observer.js");
+/* harmony import */ var _DOM_DomManipulation_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DOM/DomManipulation.js */ "./src/DOM/DomManipulation.js");
+
 
 
 
@@ -266,61 +354,11 @@ window.Nimble = {
     this.root = document.querySelector("[f-data]");
 
     // Extracting initial data and storing it
-    this.rawData = this.getInitialData();
-    this.data = this.rawData;
+    this.rawData = (0,_DataInitialiser_js__WEBPACK_IMPORTED_MODULE_1__.getInitialData)(this.root);
+    this.data = (0,_DOM_Observer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this.root, this.directives, this.rawData, _DOM_DomManipulation_js__WEBPACK_IMPORTED_MODULE_3__["default"].refreshDom);
 
     // Triggering the refresh of the DOM
-    _DOM_DomManipulation_js__WEBPACK_IMPORTED_MODULE_2__["default"].refreshDom(this.root, this.directives, this.data);
-  },
-  /**
-   * @returns {object} - Returns the converted object from data string
-   * 
-   * Takes the Data as string, and converts it to an object
-   */
-  getInitialData: function getInitialData() {
-    // Extracting the data string from the root element
-    var dataString = this.root.getAttribute("f-data");
-    var obj = {}; // Initializing an empty object to store key-value pairs
-    var key = ''; // Initializing an empty string for the key
-    var value = ''; // Initializing an empty string for the value
-    var inQuotes = false; // Flag to track if inside quotes
-    var isKey = true; // Flag to track if currently reading key or value
-
-    // Looping through each character in the data string
-    for (var i = 0; i < dataString.length; i++) {
-      // Removing unnecessary characters like '{', '}', etc.
-      var _char = dataString[i].replace(/[\{{\}}]/g, "");
-
-      // Checking if the character is a quote
-      if (_char === "'" || _char === '"') {
-        // Toggling the inQuotes flag
-        inQuotes = !inQuotes;
-      } else if (_char === ':' && !inQuotes) {
-        // Changing the flag to read value
-        isKey = false;
-      } else if (_char === ',' && !inQuotes) {
-        // Storing the key-value pair and resetting the variables
-        obj[key.trim()] = _evaluation_Evaluate_js__WEBPACK_IMPORTED_MODULE_1__["default"].evaluateDataType(value.trim());
-        key = '';
-        value = '';
-        isKey = true;
-      } else {
-        // Appending characters to key or value based on the flag
-        if (isKey) {
-          key += _char;
-        } else {
-          value += _char;
-        }
-      }
-    }
-
-    // Storing the last key-value pair if any
-    if (key.trim() !== '' && value.trim() !== '') {
-      obj[key.trim()] = _evaluation_Evaluate_js__WEBPACK_IMPORTED_MODULE_1__["default"].evaluateDataType(value.trim()); // Will convert the string to it's corresponing datatype.
-    }
-
-    // Returning the final object
-    return obj;
+    _DOM_DomManipulation_js__WEBPACK_IMPORTED_MODULE_3__["default"].refreshDom(this.root, this.directives, this.data);
   }
 };
 
