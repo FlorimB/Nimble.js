@@ -12,7 +12,7 @@ Nimble.js is a mini JavaScript framework for efficient and responsive DOM manipu
 ## Install Nimble
 
 ###### Clone the repository
-git clone [repository_URL]
+git clone [https://github.com/FlorimB/Nimble.js.git](https://github.com/FlorimB/Nimble.js.git)
 
 ###### Install dependencies
 ``` bash
@@ -31,6 +31,9 @@ The following line in your HTML file indicates the inclusion of the bundled Java
 ``` html
 <script src="./index.js"></script>
 ```
+
+## Contributions
+All contributors are welcome to participate in this repository. Should you identify any areas requiring modification or addition, kindly fork the repository, establish a branch under your name, detailing the identified issue as follows: "name/problem", and subsequently submit a pull request.
 
 
 
