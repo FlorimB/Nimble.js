@@ -1,3 +1,5 @@
+import Evaluate from "../evaluation/Evaluate";
+
 class Refresh {
     /**
      * Refreshes the DOM based on the provided root element, directives, and data.
@@ -16,6 +18,21 @@ class Refresh {
                 if (Object.keys(directives).includes(attribute.name)) {
                     // Applying the directive function to the element
                     directives[attribute.name](el, data[attribute.value]);
+                }
+            });
+        });
+    }
+
+    static eventListeners(root) {
+        const refresher = new Refresh();
+        refresher.walkDom(root, el => {
+            Array.from(el.attributes).forEach(attribute => {
+                if (attribute.name.startsWith("@")) { // Check if attribute starts with "@"
+                    const event = attribute.name.replace("@", ""); // Remove "@" from attribute name
+                    el.addEventListener(event, () => {
+                        const expression = attribute.value;
+                        Evaluate.executeExpression(expression);
+                    });
                 }
             });
         });

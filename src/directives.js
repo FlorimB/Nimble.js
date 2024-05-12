@@ -7,7 +7,7 @@ const directives = {
      * Map directives to its functions
      */
     "f-html": fHtml,
-    "f-text": fText
+    "f-text": fText,
 };
 
 // Export the directives object
