@@ -18,7 +18,10 @@ window.Nimble = {
         
         // Extracting initial data and storing it
         this.rawData = getInitialData(this.root);
-        this.data = observer(this.root, this.directives, this.rawData, Refresh.refreshDom);
+        this.data = observer(this.root, this.directives, this.rawData);
+
+        // Triggering even listeners method
+        Refresh.eventListeners(this.root);
 
         // Triggering the refresh of the DOM
         Refresh.refreshDom(this.root, this.directives, this.data);

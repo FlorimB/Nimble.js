@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch": "mix watch",
-    "dev": "mix"
+    "nimble watch": "mix watch",
+    "nimble": "mix"
   },
   "keywords": [],
   "author": "",

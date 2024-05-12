@@ -7,10 +7,12 @@
 </head>
 <body>
     <!-- testing -->
-    <div f-data="{count: 0}">
+    <div f-data="{ count: 0 }">
+        <!-- In order to access the properties of f-data you need to use Nimble.data.* -->
+        <button @click="Nimble.data.count++">Increase</button>
         <p f-text="count"></p>
     </div>
 
-    <script src="./index.js"></script>
+    <script src="./Nimble.js"></script>
 </body>
 </html>
