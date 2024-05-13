@@ -23,7 +23,7 @@ class Refresh {
         });
     }
 
-    static eventListeners(root) {
+    static eventListeners(root, data) {
         const refresher = new Refresh();
         refresher.walkDom(root, el => {
             Array.from(el.attributes).forEach(attribute => {
@@ -31,14 +31,22 @@ class Refresh {
                     const event = attribute.name.replace("@", ""); // Remove "@" from attribute name
                     el.addEventListener(event, () => {
                         const expression = attribute.value;
-                        (() => {
-                            eval(`${expression}`)
-                        })()
+                        // Bind the expression directly to the 'data' object
+                        if (data) {
+                            try {
+                                const eventHandler = new Function('data', `with(data) {${expression}}`); // Create a function with 'data' as argument
+                                eventHandler(data); // Call the function with 'data'
+                            } catch (error) {
+                                console.error(error);
+                            }
+                        }
                     });
                 }
             });
         });
     }
+    
+    
 
     /**
      * Recursively walks through the DOM tree and applies a callback function to each element.

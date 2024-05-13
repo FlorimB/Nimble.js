@@ -21,7 +21,7 @@ window.Nimble = {
         this.data = observer(this.root, this.directives, this.rawData);
 
         // Triggering even listeners method
-        Refresh.eventListeners(this.root);
+        Refresh.eventListeners(this.root, this.data);
 
         // Triggering the refresh of the DOM
         Refresh.refreshDom(this.root, this.directives, this.data);
