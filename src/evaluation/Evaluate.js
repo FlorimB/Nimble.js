@@ -31,23 +31,6 @@ class Evaluate {
             return {};
         }
     }
-
-    /**
-     * Takes the expression as a string and converts to js code
-     * @param {*} expression 
-     * @param {*} context 
-     * @returns expression
-     */
-    static executeExpression(expression, context) {
-        try {
-            // Create a new Function object from the expression string
-            const func = new Function('context', `return ${expression}`);
-            // Execute the function with the provided context
-            return func(context);
-        } catch(error) {
-            console.error(error);
-        }
-    }
 }
 
 export default Evaluate;

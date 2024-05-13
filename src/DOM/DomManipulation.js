@@ -31,7 +31,9 @@ class Refresh {
                     const event = attribute.name.replace("@", ""); // Remove "@" from attribute name
                     el.addEventListener(event, () => {
                         const expression = attribute.value;
-                        Evaluate.executeExpression(expression);
+                        (() => {
+                            eval(`${expression}`)
+                        })()
                     });
                 }
             });
