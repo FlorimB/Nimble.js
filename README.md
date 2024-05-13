@@ -1,4 +1,5 @@
 # Nimble.js
+Nimble.js is under development
 
 Nimble.js is a mini JavaScript framework for efficient and responsive DOM manipulation, inspired by Vue.js and Alpine.js.
 
