@@ -31,6 +31,17 @@ class Evaluate {
             return {};
         }
     }
+
+    executeExpression(data, expression) {
+        if (data) {
+            try {
+                const func = new Function('data', `with(data) { ${expression} }`);
+                return func(data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
 }
 
 export default Evaluate;
