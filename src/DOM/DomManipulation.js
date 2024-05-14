@@ -10,6 +10,8 @@ class Refresh {
     static refreshDom(root, directives, data) {
         // Creating a new instance of Refresh
         const refresher = new Refresh();
+        const evaluator = new Evaluate();
+
         // Walking through the DOM starting from the root element
         refresher.walkDom(root, el => {
             // Iterating through each attribute of the element
@@ -25,6 +27,8 @@ class Refresh {
 
     static eventListeners(root, data) {
         const refresher = new Refresh();
+        const evaluator = new Evaluate();
+
         refresher.walkDom(root, el => {
             Array.from(el.attributes).forEach(attribute => {
                 if (attribute.name.startsWith("@")) { // Check if attribute starts with "@"
@@ -32,14 +36,7 @@ class Refresh {
                     el.addEventListener(event, () => {
                         const expression = attribute.value;
                         // Bind the expression directly to the 'data' object
-                        if (data) {
-                            try {
-                                const eventHandler = new Function('data', `with(data) {${expression}}`); // Create a function with 'data' as argument
-                                eventHandler(data); // Call the function with 'data'
-                            } catch (error) {
-                                console.error(error);
-                            }
-                        }
+                        evaluator.executeExpression(data, expression);
                     });
                 }
             });
