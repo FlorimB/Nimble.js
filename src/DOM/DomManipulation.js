@@ -8,18 +8,13 @@ class Refresh {
      * @param {object} data - Data object to be applied to the directives.
      */
     static refreshDom(root, directives, data) {
-        // Creating a new instance of Refresh
         const refresher = new Refresh();
         const evaluator = new Evaluate();
 
-        // Walking through the DOM starting from the root element
         refresher.walkDom(root, el => {
-            // Iterating through each attribute of the element
             Array.from(el.attributes).forEach(attribute => {
-                // Checking if the attribute name matches any directive
                 if (Object.keys(directives).includes(attribute.name)) {
-                    // Applying the directive function to the element
-                    directives[attribute.name](el, data[attribute.value]);
+                    directives[attribute.name](el, evaluator.executeExpression(data, attribute.value), data);
                 }
             });
         });
@@ -42,8 +37,6 @@ class Refresh {
             });
         });
     }
-    
-    
 
     /**
      * Recursively walks through the DOM tree and applies a callback function to each element.

@@ -13,8 +13,8 @@
 <body>
     <!-- testing -->
     <div f-data="{ count: 0 }">
-        <button @click="count++">Increase</button>
-        <p f-text="count"></p>
+        <button @click="count = 2">Increase</button>
+        <p f-show="count == 2" f-text="count"></p>
     </div>
 
     <script src="./Nimble.js"></script>

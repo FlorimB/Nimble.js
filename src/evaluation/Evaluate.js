@@ -35,7 +35,7 @@ class Evaluate {
     executeExpression(data, expression) {
         if (data) {
             try {
-                const func = new Function('data', `with(data) { ${expression} }`);
+                const func = new Function('data', `with(data) { return ${expression}; }`);
                 return func(data);
             } catch (error) {
                 console.error(error);
