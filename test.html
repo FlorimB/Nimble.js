@@ -12,11 +12,12 @@
 </head>
 <body>
     <!-- testing -->
-    <div f-data="{ count: 0 }">
-        <button @click="count = 2">Increase</button>
-        <p f-show="count == 2" f-text="count"></p>
+    <div f-data="{ open: true }">
+        <button @click="open = !open">Increase</button>
+        <p f-show="open" f-text="'Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, natus.'"></p>
+        <p f-if="open">Lorem ipsum dolor sit amet.</p>
     </div>
-
+    
     <script src="./Nimble.js"></script>
 </body>
 </html>
