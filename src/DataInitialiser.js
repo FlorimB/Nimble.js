@@ -7,7 +7,7 @@ import Evaluate from "./evaluation/Evaluate.js";
  * Takes the Data as string, and converts it to an object
  */
 const getInitialData = (root) => {
-    const dataString = root.getAttribute("f-data");
+    const dataString = root.getAttribute("n-data");
     let obj = {};
     let key = '';
     let value = '';

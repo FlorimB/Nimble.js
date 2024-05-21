@@ -14,7 +14,7 @@ window.Nimble = {
      */
     start() {
         // Selecting the root element with f-data attribute
-        this.root = document.querySelector("[f-data]");
+        this.root = document.querySelector("[n-data]");
         
         // Extracting initial data and storing it
         this.rawData = getInitialData(this.root);
@@ -25,6 +25,9 @@ window.Nimble = {
 
         // Triggering the refresh of the DOM
         Refresh.refreshDom(this.root, this.directives, this.data);
+
+        // Conditional Directives
+        Refresh.conditionalDirectives(this.root, this.data);
     },
 }
 

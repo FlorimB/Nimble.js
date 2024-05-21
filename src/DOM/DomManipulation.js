@@ -14,7 +14,7 @@ class Refresh {
         refresher.walkDom(root, el => {
             Array.from(el.attributes).forEach(attribute => {
                 if (Object.keys(directives).includes(attribute.name)) {
-                    directives[attribute.name](el, evaluator.executeExpression(data, attribute.value), data);
+                    directives[attribute.name](el, evaluator.executeExpression(data, attribute.value), data, root);
                 }
             });
         });
@@ -33,6 +33,21 @@ class Refresh {
                         // Bind the expression directly to the 'data' object
                         evaluator.executeExpression(data, expression);
                     });
+                }
+            });
+        });
+    }
+
+    static conditionalDirectives(root, data) {
+        const refresh = new Refresh();
+        const evaluator = new Evaluate();
+        refresh.walkDom(root, el => {
+            Array.from(el.attributes).forEach(attribute => {
+                if (attribute.name.includes("n-if")) {
+                    let expression = evaluator.executeExpression(data, attribute.value);
+                    if (expression) {
+                        console.log(`open == ${data[attribute.value]}`);
+                    }
                 }
             });
         });
