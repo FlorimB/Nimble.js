@@ -14,7 +14,7 @@
     <!-- testing -->
     <div n-data="{ open: false }">
         <button @click="open = !open">Increase</button>
-        <p n-show="open" n-text="'Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, natus.'"></p>
+        <p n-if="!open">{{ open }}</p>
     </div>
     
     <script src="./Nimble.js"></script>

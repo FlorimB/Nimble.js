@@ -6,17 +6,19 @@ class Evaluate {
      * @returns {*} - The evaluated value.
      */
     static evaluateDataType(input) {
-        // Check if input is a string "true" or "false"
-        if (input === "true" || input === "false") {
-            return Boolean(input);
-        } 
-        // Check if input can be converted to a number
-        else if (!isNaN(Number(input))) {
-            return Number(input);
-        } 
-        // Return input as is if not a boolean or number
-        else {
-            return input;
+        for (let element in input) {
+            // Check if input is a string "true" or "false"
+            if (element === "true" || element === "false") {
+                return Boolean(element);
+            } 
+            // Check if input can be converted to a number
+            else if (!isNaN(Number(element))) {
+                return Number(element);
+            } 
+            // Return input as is if not a boolean or number
+            else {
+                return String(element);
+            }
         }
     }
 
