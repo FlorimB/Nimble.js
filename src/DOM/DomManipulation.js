@@ -17,6 +17,20 @@ class Refresh {
                     directives[attribute.name](el, evaluator.executeExpression(data, attribute.value), data, root);
                 }
             });
+
+            Array.from(el.childNodes).forEach(node => {
+                let pattern = /{{(.*?)}}/g;
+                if (node.nodeType === Node.TEXT_NODE && pattern.test(node.textContent)) {
+                    let matches = node.textContent.match(pattern);
+                    if (matches) {
+                        matches.forEach(match => {
+                            let expression = match.slice(2, -2).trim();
+                            let value = evaluator.executeExpression(data, expression);
+                            node.textContent = node.textContent.replace(match, value);
+                        });
+                    }
+                }
+            });
         });
     }
 
