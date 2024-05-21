@@ -12,10 +12,9 @@
 </head>
 <body>
     <!-- testing -->
-    <div f-data="{ open: true }">
+    <div n-data="{ open: false }">
         <button @click="open = !open">Increase</button>
-        <p f-show="open" f-text="'Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, natus.'"></p>
-        <p f-if="open">Lorem ipsum dolor sit amet.</p>
+        <p n-show="open" n-text="'Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, natus.'"></p>
     </div>
     
     <script src="./Nimble.js"></script>
